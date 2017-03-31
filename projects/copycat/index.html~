@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Recognition with Bag of Words</title>
+<title>copycat</title>
 <link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" title="Default" href="styles/github.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
@@ -141,531 +141,95 @@ table td img {
 </div>
 <div class="container">
 
-<h2>Project 4 / Scene Recognition with Bag of Words</h2>
+<h2><B>Project Copycat</B></h2>
 
 <div style="float: right; padding: 20px">
-<img src="a.jpg" />
-<p style="font-size: 14px">Example of a right floating element.</p>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/iXZIuL6PmY0" frameborder="0" allowfullscreen></iframe>
+
+<p style="font-size: 14px">Copycat video</p>
 </div>
 
-<p> Project is about image recognition. It is divided into two devisions. First is the feature extraction part and second is the classification part. In Extraction- we use Tiny images and Bag of SIFT features, Here experiment is done with GIST feature and without it. Multiple scales are tried. Furthermore, spatial pyramid method is tried to check the increase in the accuracy.Experiment with many different vocabulary sizes was made. 
-</p>
+<p>As part of the CopyCat project, six computer-assisted language learning games are being designed.  The games appeal to children between the ages of 6 and 11.  Each game entails a quest by a hero to collect items in order to remediate a problem. Each quest begins with an introduction which sets up the story line where the child must help the hero recover stolen items.  In each quest, the learners interact with the hero via sign language to tell the hero where a guard animal and a desired item are hiding. The guard animals are snakes, alligators, spiders, and ``bad'' cats. The guards are always hiding in, on, under, or behind various colored objects with the desired item close by.  In order to collect the desired item, the participant must sign the phrase describing the guard's location correctly, thus informing the heroine, Iris the Cat, where to ``poof'' the guard.</p>
 
 <ol>
-<li>Tiny images</li>
-<li>Bag of SIFT features</li>
-<li>Nearest neighbour</li>
-<li>SVM</li>
-<li>Gist descriptor</li>
-<li>Spatial pyramid</li>
-<li>Soft asignment</li>
-<li> Experiment with features at multiple scales</li>
-<li> Experiment with many different vocabulary sizes and report performance</li>
+<li>Motivation</li>
+<li>Various copycat systems till date and current proposed system</li>
+<li>Motion Templates for removing false positives</li>
+<li>Recognition pipeline</li>
+<li>videos and papers of previous system</li>
 </ol>
 <ol>
-<h3><li>Tiny Images</li></h3>
-<p> The tiny image feature, inspired by the work of Torralba, Fergus, and Freeman. Image is resized to a small, fixed resolution.This is not a particularly good representation, because it discards all of the high frequency image content. It is invarient to brightness.
-Here it is resized to 16*16 size and described it as feature </p>
-<pre><code>
-%example code
-for i = 1:1:length(image_paths)
-    s=strjoin(image_paths(i));
-    image=imread(s);      
-    image1=imresize(image,[16 16]);
-    image_feats(i,:)=reshape(image1,[1,256]);
-
-</code></pre>
 
 
 
-<h3><li>Bag of SIFT features</li></h3>
-<p>
-Here the SIFT features are extracted from the image and then using Kmeans agorithm, they are divided into clusters. This cluster acts as vocabulary for the bag of sift features algorithm. 
-</p>
-<h3>Build Vocabulary</h3>
-<pre><code>
-sift_feat=[];
-for i = 1:1:length(image_paths)
-    s=strjoin(image_paths(i));
-    img=imread(s);    
-    [locations, SIFT_features] = vl_dsift(single(img) ,'fast',  'step' , 10) ;
-    sift_feat=[SIFT_features'; sift_feat']';
-    disp('for loop ')
-    disp(i)
-end
-X=sift_feat;
-K=vocab_size;
-[centers, assignments] = vl_kmeans(single(X), K);
-size(centers)
-vocab=centers; 
-</code></pre>
-
-<p>
-Then we can take the test image and extract SIFT features from it. Check which is the nearest cluster.  We count the number of SIFT features for each cluster. This act as the features for classification algorithm.
-</p>
+<h3><li>Motivation</li></h3>
+<p>95% of deaf children are born to hearing parents who may not know
+sign language or have low levels of proficiency (gallaudet- 2001).
+Unlike hearing children of English--speaking parents or deaf children
+of signing parents, these children often lack the serendipitous access
+to language at home necessary for developing linguistic
+skills.  Often these children's only exposure to language is from
+signing at school, leading to a linguistically impoverished environment.  
+Linguists have identified a ``critical period''
+for sign language development during which a child must be
+exposed to and immersed in a language.
+By two years of age, hearing children learning spoken language are
+combining words in their expressive communication. By
+one and a half years, deaf signing children of deaf parents are also
+combining signs to communicate. A third group, deaf children of
+hearing parents, develop language in the same sequence as the first
+two groups, however, at a much slower pace. The slower linguistic
+development of this group has been attributed to a lack of daily
+interaction using language and an incomplete mental model of language.  Even more disturbing, studies have
+linked delayed language acquisition with delayed short term memory
+development.
+ </p>
 
 
 
-<h3>Bag of SIFT</h3>
-<pre><code>
-load('vocab.mat')
-
-vocab_size = size(vocab, 2);
-
-nearest_cluster=zeros(vocab_size,1);
-for i = 1:1:length(image_paths)
-    s=strjoin(image_paths(i));
-    img=imread(s);    
-    [locations, SIFT_features] = vl_dsift(single(img) ,'fast', 'step' , 5) ;
-    D = vl_alldist2(single(SIFT_features),single(vocab));
-    [mini1,I]=min(D, [], 2);
-    
-    
-   %Normal bag of words!!!
-   
-    for j=1:size(I,1)
-        nearest_cluster(I(j,1),1)=nearest_cluster(I(j,1),1)+1;
-    end    
-    
-    nearest_cluster=normc(nearest_cluster);
-    image_feats(i,:)=nearest_cluster(:,1)';
-  
-</code></pre>
+<h3><li>Various copycat systems till date and current proposed system</li></h3>
+<img src="system.png" width="80%" height="500">
 
 
 
-<h3><li>Nearest neighbour algorithm</li></h3>
-This is one of the classification algorithms. Nearest algorithm checks the nearest value from the trained data and classifies itself to that class. 
-The KNN algorithm considers K nearest trained data and classifies with the maximum occuring class in from the algorithm.
-<h3>Nearest neighbour</h3>
-<pre><code>
-D = vl_alldist2(train_image_feats',test_image_feats');
-[mini1,I]=min(D, [], 2);
-predicted_categories=train_labels(I);  
-</code></pre>
-<p>
-<ol>
-<li>Tiny images and NN</li>
-Accuracy (mean of diagonal of confusion matrix) is 0.201
-<li>Bag of words and NN</li>
-Accuracy (mean of diagonal of confusion matrix) is 0.495
-<li>Bag of words and NN and GIST</li>
-Accuracy (mean of diagonal of confusion matrix) is 0.607
-</p>
-<h3>RESULTS 1</h3>
+</br></br></br>
+
+
+<h3><li>Motion Templates for removing false positives</li></h3>
 <table border=1>
 <tr>
 <td>
-<img src="tinyNN.jpg" width="33%"/>
-<img src="bagsNN.jpg"  width="33%"/>
-<img src="bagsNN1.jpg"  width="33%"/>
+<img src="White_snake_in_blue_flowers_2.txt.jpg" width="24%"/>
+<img src="White_snake_in_blue_flowers_3.txt.jpg"  width="24%"/>
+<img src="White_snake_in_blue_flowers_4.txt.jpg"  width="24%"/>
+<img src="White_snake_in_blue_flowers_4.txt.jpg"  width="24%"/>
 
 </td>
 </tr>
-</table>
-</ol>
-
-
-
-
-
-
-
-<h3><li>SVM classifier</li></h3>
-<p>
-SVM is a linear classifier.  We have implemented 1-vs-all linear SVMS to operate in the bag of SIFT feature. Linear classifiers are one of the simplest possible learning models. The feature space is partitioned by a learned hyperplane. The test values are divided whether it is in this side of hyperplane or the another side. So it give the value(-ve in our case). We then choose the minimum value as the class for the data set.
-</p>
-<pre><code>
-%testfeat 1500*200
-for j=1: size(test_image_feats,1)
-    output=zeros(size(num_categories));
-    output=double(output);
-    for i=1:num_categories
-        size(W(i,:));
-        size(train_image_feats(j,:)');
-        %disp('output:')
-        output(i,1)= double(W(i,:))*double(test_image_feats(j,:))'+B(i);
-    end
-    %size(output);
-    %disp('min of ans');
-    [mini1,I]=max(output,[],1);
-    %size(I)
-    a(j,1)=categories(I);
-    
-end
-predicted_categories=a;
-</code></pre>
-<ol>
-<li>Tiny images and SVM</li>
-Accuracy (mean of diagonal of confusion matrix) is 0.193
-<li>Bag of words and SVM</li>
-Accuracy (mean of diagonal of confusion matrix) is 0.539
-</p>
-<h3>RESULTS 1</h3>
-<table border=1>
 <tr>
 <td>
-<img src="tinySVM.jpg" width="49%"/>
-<img src="bagsSVM.jpg"  width="49%"/>
+<img src="White_cat_on_orange_wall_2.txt.jpg" width="24%"/>
+<img src="White_cat_on_orange_wall_3.txt.jpg"  width="24%"/>
+<img src="White_cat_on_orange_wall_4.txt.jpg"  width="24%"/>
+<img src="White_cat_on_orange_wall_5.txt.jpg"  width="24%"/>
 
 </td>
+
 </tr>
 </table>
-</ol>
-
-
-
-
-
-
-
-<h3><li>Spatial pyramid</li></h3>
 <p>
-Here we divide the image into 2 scales. First one is the complete image itself. Second one is the 4*4 grid. Of image. Thus to divide the image into 4 parts. 
-For eac of the five images, we calculate the SIFT features seperately and then concatinate and send them to the classifier. The performance improves than the normal implementation.
+Here in first row the pharse is :White_snake_in_blue_flowers_2 and in second row the phrase is: White_cat_on_orange_wall_2
+We can clearly distinguish betweent the phrases. This motion templates were used for removing the noise image/incorrect image. 
+Various techniques were tried(SVM, KNN, Mahalobnois distance, CNN ). Currently due to less accuracy data is manually seperated from the training set using the motion template image.
 </p>
+<hr>
+</br></br></br>
 
-<pre><code>
-%this is for 2nd scale of pyramid. Such is done for four other parts.
-%...
-%...
-I2=img(size(img,1)/2+1:size(img,1),1:size(img,2)/2,:);
+<h3><li>Recognition and data collection pipeline</li><h3>
+<img src="recog.jpeg" width="70%"/>
 
-[locations, SIFT_features] = vl_dsift(single(I2) ,'fast', 'step' , 5) ;
-D = vl_alldist2(single(SIFT_features),single(vocab));
-[mini22,I22]=min(D, [], 2);
-for j=1:size(I22,1)
-   nearest_cluster2(I22(j,1),1)=nearest_cluster2(I22(j,1),1)+1;
-end    
-    
-nearest_cluster2=normc(nearest_cluster2);
-image_feats2=nearest_cluster2(:,1)';
-%...
-%...
-</code></pre>
-<h3>Spatial pyramid accuracy:</h3>
-<h3>Accuracy increased from 0.495 to 0.560 after spatial Pyramid assignment</h3>
-<center>
-<p>
-<img src="spatialPyramid.jpg">
-<br>
-</center>
-</p>
+</br></br></br>
 
 
-<h3><li>Soft Assignment</li></h3>
-<p>
-Here we put the weight of the sift feature instead of count while putting into cluster set. Thus instead of puting the count we put the weight of the cluster.The accuracy increases modestly with soft assignment.
-</p>
-
-<pre><code>
-
-%...
-%...
-s=strjoin(image_paths(i));
-img=imread(s);    
-[locations, SIFT_features] = vl_dsift(single(img) ,'fast', 'step' , 5) ;
-D = vl_alldist2(single(SIFT_features),single(vocab));
-[mini1,I]=min(D, [], 2);
-for j=1:size(I,1)
-        nearest_cluster(I(j,1),1)=nearest_cluster(I(j,1),1)+mini1(j,1); % Here we used to add one for count.. here we are adding the weight
-end   
-%...
-%...
-</code></pre>
-<h3>Soft assignment:</h3>
-<h3>Accuracy increased from 0.495 to 0.532 after soft assignment</h3>
-<center>
-<p>
-<img src="softAss.jpg">
-<br>
-</center>
-</p>
-
-
-<h3><li>Experiment with features at multiple scales</li></h3>
-<p>
-Following were the results with different scales:
-<ol>
-<li>4*4 scale: 0.203</li>
-<li>8*8 scale: 0.214</li>
-<li>16*16 scale: 0.201</li>
-<li>64*64 scale : 0.177</li>
-<li>128*128 scale: 0.167</li>
-</ol>
-<h3>Diagrams of 4*4 scale, 64*64 scale, 128*128 scale<h3>
-<table border=1>
-<tr>
-<td>
-<img src="44tiny.jpg" width="33%"/>
-<img src="1616.jpg"  width="33%"/>
-<img src="6464.jpg"  width="33%"/>
-
-</td>
-</tr>
-</table>
-
-
-With increase the scale the accuracy decreases after a perticular point.
-</p>
-
-
-
-
-<h3><li>Experiment with many different vocabulary sizes and report performance.</li></h3>
-<p>
-Following were the results with different vocabulary size:
-<ol>
-
-<li>size 10: 0.367</li>
-<li>size 20: 0.432</li>
-<li>size 50: 0.501</li>
-<li>size 100: 0.513</li>
-<li>size 200: 0.523</li>
-<li>size 400: 0.527</li>
-<li>size 1000: 0.531</li>
-<li>size 10000: 0.532</li>
-</ol>
-
-With increase in the vocab size the accuracy increases.
-
-</p>
-<h3>Scaling:</h3>
-<center>
-<p>
-<img src="400.jpg">
-<br>
-</center>
-</p>
-
-<h3><li>GIST descriptors</li></h3>
-<p>
-Here we have 16 bins. And 4 scales. And 8 orientations. Thus we get 512 dimention of features.
-Thus the SIFT are converted to 512 dimentional features.
-
-</p>
-<pre><code>
-features=nearest_cluster(:,1)';
-param.imageSize = [256 256]; % it works also with non-square images
-param.orientationsPerScale = [8 8 8 8];
-param.numberBlocks = 4;
-param.fc_prefilt = 4;
-[gist1, param] = LMgist(img, '', param);
-image_feats(i,:)=[features,gist1];
-</code></pre>
-
-<h3>GIST accuracy:</h3>
-<p>Accuracy: 0.625</p>
-<p>
-<center>
-<p>
-<img src="/home/Kshitish/Documents/CV/proj4/html/gist.jpg">
-<br>
-Accuracy (mean of diagonal of confusion matrix) is 0.625
-<p>
-
-<table border=0 cellpadding=4 cellspacing=1>
-<tr>
-<th>Category name</th>
-<th>Accuracy</th>
-<th colspan=2>Sample training images</th>
-<th colspan=2>Sample true positives</th>
-<th colspan=2>False positives with true label</th>
-<th colspan=2>False negatives with wrong predicted label</th>
-</tr>
-<tr>
-<td>Kitchen</td>
-<td>0.560</td>
-<td bgcolor=LightBlue><img src="thumbnails/Kitchen_image_0161.jpg" width=100 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Kitchen_image_0144.jpg" width=100 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Kitchen_image_0003.jpg" width=100 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Kitchen_image_0097.jpg" width=101 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Industrial_image_0089.jpg" width=112 height=75><br><small>Industrial</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Forest_image_0083.jpg" width=75 height=75><br><small>Forest</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Kitchen_image_0048.jpg" width=100 height=75><br><small>Highway</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Kitchen_image_0042.jpg" width=57 height=75><br><small>Forest</small></td>
-</tr>
-<tr>
-<td>Store</td>
-<td>0.610</td>
-<td bgcolor=LightBlue><img src="thumbnails/Store_image_0278.jpg" width=103 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Store_image_0221.jpg" width=113 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Store_image_0034.jpg" width=106 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Store_image_0146.jpg" width=100 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Office_image_0112.jpg" width=123 height=75><br><small>Office</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/TallBuilding_image_0131.jpg" width=75 height=75><br><small>TallBuilding</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Store_image_0081.jpg" width=131 height=75><br><small>TallBuilding</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Store_image_0047.jpg" width=111 height=75><br><small>Coast</small></td>
-</tr>
-<tr>
-<td>Bedroom</td>
-<td>0.370</td>
-<td bgcolor=LightBlue><img src="thumbnails/Bedroom_image_0108.jpg" width=113 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Bedroom_image_0172.jpg" width=112 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Bedroom_image_0011.jpg" width=101 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Bedroom_image_0118.jpg" width=114 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/InsideCity_image_0131.jpg" width=75 height=75><br><small>InsideCity</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Store_image_0038.jpg" width=100 height=75><br><small>Store</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Bedroom_image_0117.jpg" width=52 height=75><br><small>OpenCountry</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Bedroom_image_0019.jpg" width=101 height=75><br><small>Mountain</small></td>
-</tr>
-<tr>
-<td>LivingRoom</td>
-<td>0.390</td>
-<td bgcolor=LightBlue><img src="thumbnails/LivingRoom_image_0121.jpg" width=110 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/LivingRoom_image_0165.jpg" width=111 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/LivingRoom_image_0114.jpg" width=98 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/LivingRoom_image_0022.jpg" width=100 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Office_image_0120.jpg" width=116 height=75><br><small>Office</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Kitchen_image_0128.jpg" width=115 height=75><br><small>Kitchen</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/LivingRoom_image_0062.jpg" width=100 height=75><br><small>Bedroom</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/LivingRoom_image_0066.jpg" width=101 height=75><br><small>Office</small></td>
-</tr>
-<tr>
-<td>Office</td>
-<td>0.750</td>
-<td bgcolor=LightBlue><img src="thumbnails/Office_image_0002.jpg" width=110 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Office_image_0056.jpg" width=130 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Office_image_0138.jpg" width=96 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Office_image_0020.jpg" width=105 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Mountain_image_0098.jpg" width=75 height=75><br><small>Mountain</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Bedroom_image_0157.jpg" width=90 height=75><br><small>Bedroom</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Office_image_0117.jpg" width=98 height=75><br><small>Industrial</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Office_image_0032.jpg" width=120 height=75><br><small>InsideCity</small></td>
-</tr>
-<tr>
-<td>Industrial</td>
-<td>0.380</td>
-<td bgcolor=LightBlue><img src="thumbnails/Industrial_image_0136.jpg" width=100 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Industrial_image_0033.jpg" width=113 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Industrial_image_0079.jpg" width=101 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Industrial_image_0021.jpg" width=100 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/LivingRoom_image_0116.jpg" width=51 height=75><br><small>LivingRoom</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/TallBuilding_image_0057.jpg" width=75 height=75><br><small>TallBuilding</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Industrial_image_0108.jpg" width=100 height=75><br><small>InsideCity</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Industrial_image_0068.jpg" width=94 height=75><br><small>Store</small></td>
-</tr>
-<tr>
-<td>Suburb</td>
-<td>0.930</td>
-<td bgcolor=LightBlue><img src="thumbnails/Suburb_image_0144.jpg" width=113 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Suburb_image_0104.jpg" width=113 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Suburb_image_0041.jpg" width=113 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Suburb_image_0175.jpg" width=113 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Coast_image_0051.jpg" width=75 height=75><br><small>Coast</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/InsideCity_image_0085.jpg" width=75 height=75><br><small>InsideCity</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Suburb_image_0070.jpg" width=113 height=75><br><small>Kitchen</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Suburb_image_0149.jpg" width=113 height=75><br><small>Street</small></td>
-</tr>
-<tr>
-<td>InsideCity</td>
-<td>0.490</td>
-<td bgcolor=LightBlue><img src="thumbnails/InsideCity_image_0074.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/InsideCity_image_0295.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/InsideCity_image_0127.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/InsideCity_image_0044.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Suburb_image_0084.jpg" width=113 height=75><br><small>Suburb</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Coast_image_0085.jpg" width=75 height=75><br><small>Coast</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/InsideCity_image_0056.jpg" width=75 height=75><br><small>TallBuilding</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/InsideCity_image_0055.jpg" width=75 height=75><br><small>Store</small></td>
-</tr>
-<tr>
-<td>TallBuilding</td>
-<td>0.500</td>
-<td bgcolor=LightBlue><img src="thumbnails/TallBuilding_image_0049.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/TallBuilding_image_0318.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/TallBuilding_image_0077.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/TallBuilding_image_0038.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Store_image_0063.jpg" width=57 height=75><br><small>Store</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Forest_image_0060.jpg" width=75 height=75><br><small>Forest</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/TallBuilding_image_0023.jpg" width=75 height=75><br><small>LivingRoom</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/TallBuilding_image_0036.jpg" width=75 height=75><br><small>Coast</small></td>
-</tr>
-<tr>
-<td>Street</td>
-<td>0.810</td>
-<td bgcolor=LightBlue><img src="thumbnails/Street_image_0197.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Street_image_0072.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Street_image_0143.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Street_image_0036.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Kitchen_image_0175.jpg" width=100 height=75><br><small>Kitchen</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Store_image_0074.jpg" width=54 height=75><br><small>Store</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Street_image_0088.jpg" width=75 height=75><br><small>Highway</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Street_image_0046.jpg" width=75 height=75><br><small>Suburb</small></td>
-</tr>
-<tr>
-<td>Highway</td>
-<td>0.810</td>
-<td bgcolor=LightBlue><img src="thumbnails/Highway_image_0209.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Highway_image_0054.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Highway_image_0144.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Highway_image_0078.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Suburb_image_0156.jpg" width=113 height=75><br><small>Suburb</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Industrial_image_0087.jpg" width=112 height=75><br><small>Industrial</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Highway_image_0155.jpg" width=75 height=75><br><small>Coast</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Highway_image_0036.jpg" width=75 height=75><br><small>Mountain</small></td>
-</tr>
-<tr>
-<td>OpenCountry</td>
-<td>0.430</td>
-<td bgcolor=LightBlue><img src="thumbnails/OpenCountry_image_0207.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/OpenCountry_image_0187.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/OpenCountry_image_0065.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/OpenCountry_image_0018.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Forest_image_0009.jpg" width=75 height=75><br><small>Forest</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Kitchen_image_0033.jpg" width=57 height=75><br><small>Kitchen</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/OpenCountry_image_0103.jpg" width=75 height=75><br><small>Suburb</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/OpenCountry_image_0005.jpg" width=75 height=75><br><small>Coast</small></td>
-</tr>
-<tr>
-<td>Coast</td>
-<td>0.710</td>
-<td bgcolor=LightBlue><img src="thumbnails/Coast_image_0307.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Coast_image_0228.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Coast_image_0112.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Coast_image_0033.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Mountain_image_0083.jpg" width=75 height=75><br><small>Mountain</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Mountain_image_0041.jpg" width=75 height=75><br><small>Mountain</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Coast_image_0077.jpg" width=75 height=75><br><small>InsideCity</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Coast_image_0087.jpg" width=75 height=75><br><small>OpenCountry</small></td>
-</tr>
-<tr>
-<td>Mountain</td>
-<td>0.680</td>
-<td bgcolor=LightBlue><img src="thumbnails/Mountain_image_0302.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Mountain_image_0151.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Mountain_image_0119.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Mountain_image_0018.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Store_image_0107.jpg" width=100 height=75><br><small>Store</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Bedroom_image_0071.jpg" width=112 height=75><br><small>Bedroom</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Mountain_image_0065.jpg" width=75 height=75><br><small>Kitchen</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Mountain_image_0049.jpg" width=75 height=75><br><small>Forest</small></td>
-</tr>
-<tr>
-<td>Forest</td>
-<td>0.960</td>
-<td bgcolor=LightBlue><img src="thumbnails/Forest_image_0132.jpg" width=75 height=75></td>
-<td bgcolor=LightBlue><img src="thumbnails/Forest_image_0309.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Forest_image_0080.jpg" width=75 height=75></td>
-<td bgcolor=LightGreen><img src="thumbnails/Forest_image_0111.jpg" width=75 height=75></td>
-<td bgcolor=LightCoral><img src="thumbnails/Mountain_image_0039.jpg" width=75 height=75><br><small>Mountain</small></td>
-<td bgcolor=LightCoral><img src="thumbnails/Street_image_0135.jpg" width=75 height=75><br><small>Street</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Forest_image_0057.jpg" width=75 height=75><br><small>Suburb</small></td>
-<td bgcolor=#FFBB55><img src="thumbnails/Forest_image_0083.jpg" width=75 height=75><br><small>Kitchen</small></td>
-</tr>
-<tr>
-<th>Category name</th>
-<th>Accuracy</th>
-<th colspan=2>Sample training images</th>
-<th colspan=2>Sample true positives</th>
-<th colspan=2>False positives with true label</th>
-<th colspan=2>False negatives with wrong predicted label</th>
-</tr>
-</table>
-</center>
-
-<div style="clear:both" >
-<p> 	</p>
-</div>
 </body>
 </html>
