@@ -1,0 +1,322 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1><span style="color: #DE3737"> Kshitish Deo</span></h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Dynamic Hand Gesture Recognition using Hidden Markov Model by Microsoft Kinect Sensor</h2>
+
+<div style="float: right; padding: 10px">
+<img src="results.png" "/>
+
+</div>
+
+
+<p> 	
+Hand gesture recognition is one of the leading applications of human computer interaction. 
+Here, dynamic hand gesture recognition for few subset of Indian sign language recognition was considered. 
+The use of depth camera such as <B>Kinect sensor gave skeleton information of signer body</B>.
+After detailed study of dynamic ISL vocabulary with reference to skeleton joint information, 
+we have identified <B>angle as a feature with reference to two moving hand. </B>
+Here, real time video has been captured and gesture was recognized using <B>Hidden Markov Model (HMM)</B>. 
+Ten state HMM model was designed and normalized angle feature of dynamic sign was being observed. 
+Maximum likelihood probability symbol was considered as a recognized gesture. 
+Algorithm has been tested on ISL <B>20 dynamic signs of total 800 training set of four persons and achieved 89.25% average accuracy.</B><p>
+There are following parts in the project.
+</p>
+
+<ol>
+<li>Introduction</li>
+<li>Methodology</li>
+<li>Dataset</li>
+<li>Recognition Using Hidden Markov Model</li>
+<li>Algorithms </li>
+<li>Results and analysis</li>
+</ol>
+
+<ol>
+<h3><li>Introduction</li></h3>
+<p> 	
+In India, the main mode of communication between the deaf and the outside world is Indian Sign Language.
+Vision based approach is found more suitable and practical as compared to hardware based approach. 
+Vision based processing can be divided into broadly two types:2D web camera and 3D stereo camera. 
+Problems faced by the 2D cameras are: complex algorithms to handle segmentation of colour, lack of depth information and brightness factor.
+With the advancement of sensor technology in computer vision, Microsoft Kinect sensor is widely used to deal with dynamic hand gesture recognition problem. 
+This project presents a system to recognize hand gestures with Kinect camera. Pattern of hand movement is analyzed using Hidden Markov Model.
+This gesture is divided into states. Output symbols are extracted from the gestures. These symbols become parameters for the Hidden Markov Model(HMM). 
+Here, dynamic hand gesture recognition for ISL word using Kinect camera and HMM is presented
+</p>
+<h3><li>Methodology</li></h3>
+<p>
+The system consists of modules such as data acquisition, feature extraction and hand gesture recognition using HMM. In data acquisition module color, depth and skeleton information was captured.  In feature extraction with the skeleton joint information, angle was formed and used as a feature  and data normalization was done on it. In hand gesture recognition module, maximum likelihood of HMM parameters was derived using the Baum-Welch algorithm for given set of sequences.
+</p>
+
+<h3>Methodology diagram</h3>
+<table border=1>
+<tr>
+<td>
+<img src="methodology.png" width="90%"/>
+
+
+</td>
+</tr>
+</table>
+
+
+
+
+
+<h3><li>Dataset</li></h3>
+<p>
+In this paper, total 20 dynamic signs from ISL vocabulary has been considered
+</p>
+
+<table>
+  <tr>
+    <th>Shirt</th>
+    <th>Pant</th>
+    <th>Tie</th>
+	<th>Coat</th>
+  </tr>
+  <tr>
+    <th>Kurta</th>
+    <th>Banyan</th>
+    <th>Cap</th>
+	<th>Saree</th>
+  </tr>
+<tr>
+    <th>Sky</th>
+    <th>Star</th>
+    <th>Cloud</th>
+	<th>Wind</th>
+  </tr>
+<tr>
+    <th>Lightening</th>
+    <th>Sun</th>
+    <th>Thunder</th>
+	<th>Sunrise</th>
+  </tr>
+<tr>
+    <th>Sunset</th>
+    <th>Room</th>
+    <th>House</th>
+	<th>Roof</th>
+  </tr>
+  
+
+</table>
+</p>
+
+
+<h3>Algorithm: Feature extraction and processing from tracked skeleton </h3>
+<pre><code>
+%Initial:  Each gesture is tracking156 frames.First 13 and last 2 frames are skipped.
+%Frames between 14 to 154 frames are tracked (140 frames). 
+%Each gesture is consists of 10 states so in every 14 frames one symbol (state) is derived.
+
+1:	frameNo=0; angleSpinSum=0;
+2:	SymbolArray A[10]=0; 	  	  //Ten state gesture is initialized to zero initially
+3:	if (frameNo==14 )
+4:	ALARM; 			 			  //New Gesture processing will start
+5:	If(frameNo==154)
+6:	ALARM; 						  // Ready for next gesture
+7:	 if(frame==155)   //154th frame is the last frame
+8:	    Call Procedure HMMRecognition (SymbolArray A) // HMM classification procedure for Skeleton
+9:	Else //extract the angle feature
+10:	RightWrist = skel. WristRight  // Co-ordinators of right wrist joint
+11:	LeftWrist = skel.WristLeft     // Co-ordinators of left wrist joint
+12:	SpineJoint = skel. Spine       // Co-ordinators of spine joint
+13:	AngleSpine=AngleBetweenTwoVectors( RightWrist - SpineJoint, LeftWrist-SpineJoint)
+14:	If (frameNo%14 == 0)           // Check number of frame is in multiple of 14
+15:	Avg_angle = average(AngleSpineSum)
+16:	Observation_symbol = normalize(Avg_angle) //Normalize the angle into symbols 1 to 18          
+17:	A = store the Observation_symbol in array A
+18:	  else
+19:	AngleSpineSum=AngleSpineSum+AngleSpine
+
+EndProcedure
+
+</code></pre>
+
+<h3>Algorithm: Hand gesture recognition using HMM</h3>
+<pre><code>
+%Procedure HMMRecognition (SymbolArrayA[])
+%Initial:  Array of symbols are transferred into HMM models.
+%Each HMM model represents one gesture. 
+%All HMM models of related to one gesture are stored in single file F. 
+%So for unknown gesture, we searched HMM likelihood gesture in parallel.
+
+1:	gestureNumber =n; //n is number of gestures stored in file F
+2:	noOfSymbols=10; //10 state gesture
+3:	noOfFiles=20 //20 gesture types
+4:	for i=1 to noOfFiles
+5:	SymbolArraysequence[][]=SymbolArray[gestureNumber][noOfSymbols];
+// Stored symbols from file Fi
+//sequence[1][1'10]tosequence [last gesturenumber]
+[1'10]
+
+6:	HiddenMarkovModel hmm (10, 18); // Create instance ofHMMhaving10states and each have 18 possible values.
+7:	learn = BaumWelchLearning(hmm); //Set Tolerance = 0.0001,Iterations = 10
+8:	learn.Run(sequences) ;  		// Train the symbols from the file
+9:	likelihoodi = hmm.Evaluate(A); 
+    // Evaluate likelihood of the array A with respect to the  sequences from file                                                                
+    // Check the probability of sequence A with each HMM models 
+
+10:	end for
+
+11:	Gesture= Max( likelihoodi) // Sequences which contains few errors have higher probability
+12:	Print Gesture
+13:	StoreSequence( Fi , A); // Store the sequence into Filei.
+
+EndProcedure
+
+</code></pre>
+
+<h3>RESULTS 2</h3>
+<p>
+Total 20 ISL signs on four different persons considering scaling variation were considered. Each sign tested on four different persons 10 times and average sign accuracy was calculated. Total average accuracy is calculated by equation (3). Result shows that, on expert signer we have achieved good accuracy and for non-expert signer accuracy decreases. But still, system is designed in such a way that at testing time training set gets updated and helped to increase recognition rate for Non-expert signer.
+Sign language recognition is a very challenging problem with limitation and constraints of computer vision and cannot be directly compared with other sign language work due to dependency of various signs, camera and dataset 
+
+</p>
+<table border=1>
+<tr>
+<td>
+<img src="resultsFinal.png" width="90%" height="200"/>
+</td>
+</tr>
+</table>
+
+<h3>Published paper:</h3>
+<p><B>Archana Ghotkar, Pujashree Vidap, Kshitish Deo.Dynamic Hand Gesture Recognition using Hidden Markov Model by Microsoft Kinect Sensor."  International Journal of Computer Applications 150(5):5-9, September 2016.</B></p>

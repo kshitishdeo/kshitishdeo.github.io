@@ -1,0 +1,235 @@
+<html>
+<head>
+<title>copycat</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Kshitish Deo</h1>
+</div>
+</div>
+<div class="container">
+
+<h2><B>Project Copycat</B></h2>
+
+<div style="float: right; padding: 20px">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/iXZIuL6PmY0" frameborder="0" allowfullscreen></iframe>
+
+<p style="font-size: 14px">Copycat video</p>
+</div>
+
+<p>As part of the CopyCat project, six computer-assisted language learning games are being designed.  The games appeal to children between the ages of 6 and 11.  Each game entails a quest by a hero to collect items in order to remediate a problem. Each quest begins with an introduction which sets up the story line where the child must help the hero recover stolen items.  In each quest, the learners interact with the hero via sign language to tell the hero where a guard animal and a desired item are hiding. The guard animals are snakes, alligators, spiders, and ``bad'' cats. The guards are always hiding in, on, under, or behind various colored objects with the desired item close by.  In order to collect the desired item, the participant must sign the phrase describing the guard's location correctly, thus informing the heroine, Iris the Cat, where to ``poof'' the guard.</p>
+
+<ol>
+<li>Motivation</li>
+<li>Various copycat systems till date and current proposed system</li>
+<li>Motion Templates for removing false positives</li>
+<li>Recognition pipeline</li>
+<li>videos and papers of previous system</li>
+</ol>
+<ol>
+
+
+
+<h3><li>Motivation</li></h3>
+<p>95% of deaf children are born to hearing parents who may not know
+sign language or have low levels of proficiency (gallaudet- 2001).
+Unlike hearing children of English--speaking parents or deaf children
+of signing parents, these children often lack the serendipitous access
+to language at home necessary for developing linguistic
+skills.  Often these children's only exposure to language is from
+signing at school, leading to a linguistically impoverished environment.  
+Linguists have identified a ``critical period''
+for sign language development during which a child must be
+exposed to and immersed in a language.
+By two years of age, hearing children learning spoken language are
+combining words in their expressive communication. By
+one and a half years, deaf signing children of deaf parents are also
+combining signs to communicate. A third group, deaf children of
+hearing parents, develop language in the same sequence as the first
+two groups, however, at a much slower pace. The slower linguistic
+development of this group has been attributed to a lack of daily
+interaction using language and an incomplete mental model of language.  Even more disturbing, studies have
+linked delayed language acquisition with delayed short term memory
+development.
+ </p>
+
+
+
+<h3><li>Various copycat systems till date and current proposed system</li></h3>
+<img src="system.png" width="80%" height="500">
+
+
+
+</br></br></br>
+
+
+<h3><li>Motion Templates for removing false positives</li></h3>
+<table border=1>
+<tr>
+<td>
+<img src="White_snake_in_blue_flowers_2.txt.jpg" width="24%"/>
+<img src="White_snake_in_blue_flowers_3.txt.jpg"  width="24%"/>
+<img src="White_snake_in_blue_flowers_4.txt.jpg"  width="24%"/>
+<img src="White_snake_in_blue_flowers_4.txt.jpg"  width="24%"/>
+
+</td>
+</tr>
+<tr>
+<td>
+<img src="White_cat_on_orange_wall_2.txt.jpg" width="24%"/>
+<img src="White_cat_on_orange_wall_3.txt.jpg"  width="24%"/>
+<img src="White_cat_on_orange_wall_4.txt.jpg"  width="24%"/>
+<img src="White_cat_on_orange_wall_5.txt.jpg"  width="24%"/>
+
+</td>
+
+</tr>
+</table>
+<p>
+Here in first row the pharse is :White_snake_in_blue_flowers_2 and in second row the phrase is: White_cat_on_orange_wall_2
+We can clearly distinguish betweent the phrases. This motion templates were used for removing the noise image/incorrect image. 
+Various techniques were tried(SVM, KNN, Mahalobnois distance, CNN ). Currently due to less accuracy data is manually seperated from the training set using the motion template image.
+</p>
+<hr>
+</br></br></br>
+
+<h3><li>Recognition and data collection pipeline</li><h3>
+<img src="recog.jpeg" width="70%"/>
+
+</br></br></br>
+
+
+</body>
+</html>

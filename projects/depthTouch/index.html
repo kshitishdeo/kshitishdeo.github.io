@@ -1,0 +1,270 @@
+<html>
+<head>
+<title>Recognition with Bag of Words</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Kshitish Deo</h1>
+</div>
+</div>
+<div class="container">
+
+
+<div>
+<img src="mainPage2.png" height="500" width="1000" />
+</div>
+
+<p> This research is GRID, gesture Recognition via infrared and depth detection!!
+</p>
+<p>
+Lets discuss following points here
+</p>
+<ol>
+<li>Problems with smart watches</li>
+<li>Literature survey and other existing research projects</li>
+<li>Existing interactions and potential scope of reseach on interactions</li>
+<li>Depth map is noisy and illumination is not accurate!!</li>
+<li>Illumination Pipeline</li>
+<li>Depth pipeline</li>
+<li>Application: Paint</li>
+<li>Application: Gesture Recognition</li>
+<li>Application: Number pad</li>
+</ol>
+<ol>
+
+
+<h3><li>Problems with smart watches</li></h3>
+<div style="float: right; padding: 10px">
+<img src="watches.png" height="300" width="300"/>
+
+</div>
+With our current technology, our current modes of interaction is through touch, tap and drag. 
+There are problems associated with this, especially with the small size of wearables in the market. 
+<B>One is Occulsion.</B> Once our finger enters the interaction zone, we cannot see much of where we are tapping. 
+This also relates to the fat finger problem where our fingers are usually bigger than the buttons we are clicking and we end up clicking the wrong one.
+
+<B>One alternative is using speech.</B>
+ However, it usually does not work when theres alot of ambient noise and usually makes for awkward encounters with potential breaches of privacy.
+
+Then, there is the <B>problem of using gloves on touch screen which sparked people to start selling touchscreen gloves.</B> Since touch screens generally use capacitive technology, people will find it difficult to use their watch or phones if their hands are wet or while wearing gloves.</h3>
+</p>
+
+
+<hr>
+</br></br></br>
+<h3><li>Literature survey and other existing research projects</li></h3>
+
+<p>
+In 2012, Kent Lyons published his research on Facet, where he came up with the most intuitive solution to solve the small size of interaction surface. His solution was to increase the number of screens such that the screens surrounds the user’s wrist. 
+However, we can see that this is bulky and definitely expensive.
+In 2015, a few people from Autodesk integrated a solution used in tablet and phones on watches - a stylus. This isn’t exactly bulky, but not many people would appreciate wearing a pointer thingy on their finger everytime they want to use their watch.
+Then people started coming up with more ingenious solutions.
+Both in CHI 2016, SkinTrack used the electric signals from a ring worn by a user to measure the distance and FingerIO uses echolocation to detect the finger location. While the ring required the user to wear another wearable for it to work, a ring is certainly less troublesome than a pointer but lets try to get rid of that too.
+Normal watches uses tactile feedback, FingerIO uses sound. Whats left?
+</p>
+<img src="old1.png" width="90%"/>
+
+<p>
+In carrying out this research, we sourced out a number of related papers. Here are some of the prominent research work done on these areas. Most of them use the Kinect Depth sensor to detect fingers (kinect is different as it uses speckled reflection and an RGB to improve results). 
+
+The closest we have is Air+Touch which uses a camboard nano mounted to a phone. While similar device, it is fundamentally different in the platform the user is interacting on. Holding a phone on one hand and cam is looking down on the user’s 
+</p>
+
+<img src="old2.png" width="90%"/>
+
+<hr>
+</br></br></br>
+<h3><li>Existing interactions and potential scope of reseach on interactions</li></h3>
+<img src="ptInt.png" width="90%"/>
+<p>
+
+With our curent technology, smart watches allows for this. Some are easier, (the green ones), some harder. But admittedly, still possible.
+We want to expand the interactive surface to make existing interactions easier and allow for more of other interactions. In particular, we want to achieve - this (update green and yellow highlights).
+The green ones are the ones we managed to achieve, while the light yellow ones are the ones that are easily achievable with the algorithms and techniques that we are currently using. The darker ones are the ones which with a slight extension, will be doable as well.
+
+</p>
+
+<hr>
+</br></br></br>
+
+
+
+<h3><li>Depthmap is noisy and illumination data is not accurate!!</li></h3>
+<img src="prob1.png" width="50%" height="300">
+<hr>
+</br></br></br>
+
+
+<h3><li>Illumination Pipeline</li></h3>
+
+
+<img src="illuminationPipe.png" width="90%" height="300">
+
+<p>We saw that the Depth was noisy. However, the illumination data was much more stable
+</br></br>
+Filtering -> Rotation & Reflection ->
+Setting Interest Region->Getting X Maximal graph -> Finding 80th Percentile of value->Getting Y Maximal Graph->
+Getting Depth of Interest Region->
+
+Detecting Finger->Sobel Filtering with Threshold based on Depth-> Getting Direction and Magnitude -> Getting Centers ->
+Distinguishing Fingers -> Local Comparison ->
+Monitoring States -> Getting local State and duration ->
+Getting Gestures from State -> Using State Diagram
+</p>
+
+<hr>
+</br></br></br>
+<h3><li>Depth pipeline</li></h3>
+<img src="depthPipe.png" width="90%" height="300">
+
+<hr>
+</br></br></br>
+<h3><li>Application: Paint!!!</li><h3>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/6JceZvvkFiA" frameborder="0" allowfullscreen></iframe>
+<hr>
+</br></br></br>
+
+<h3><li>Application: Gesture Recognition!!!</li><h3>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/afAf5VtAbdY" frameborder="0" allowfullscreen></iframe>
+<hr>
+</br></br></br>
+
+
+<h3><li>Application: Number pad!!!</li><h3>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/R2kR_t0rmBI" frameborder="0" allowfullscreen></iframe>
+<hr>
+</br></br></br>
+</body>
+</html>

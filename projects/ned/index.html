@@ -1,0 +1,235 @@
+<html>
+<head>
+<title>Recognition with Bag of Words</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Kshitish Deo</h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Network Edge Computing Device</h2>
+
+<div style="float: right; padding: 20px">
+<img src="arch.png" width="100%" height="400">
+<p style="font-size: 14px"></p>
+</div>
+
+<p> Looking at the future era of IOT, innumerable connected devices will be introduced in everyday interactions. These devices would presumably be in constant conversation with each other, resulting in  millions of status messages being generated every second.  The nature of these IOT applications would thus lead to latency and bandwidth sensitivity. 
+We propose a Network Edge Computing Device, with storage and computational abilities, to act as a platform to host multiple IOT applications. The basic idea is to identify separable logic in an application, bring it down and host it at the network edge. This Network Edge Device (NED) will hold the intermediate logic of various application, so as to facilitate local resolution of queries and local provision of resources, thus ensuring reflex actions and intelligent management of internet bandwidth. This platform will give developers the ability to achieve logical and physical separation of the aggregation and analysis components gracefully and provide a robust platform for private vendors to host their applications benefiting both the vendor and the end user.
+In this project, we have considered two case studies: a generic content distribution application and an IOT sensor application. The content distribution application at NED serves local copy of high bandwidth content(videos) to the end user which is obtained from the cloud through a push mechanism implemented by the application logic. IOT sensor application performs computation on the high frequency data and sends the analysis to the cloud server. We have successfully analyzed the performance of our proposed hierarchical architecture in comparison with the traditional flat architecture. 
+
+<ol>
+<li>Device Agent Logic</li>
+<li>Intermediate application logic</li>
+<li>Results</li>
+
+</ol>
+
+<ol>
+
+
+<h3><li>Device Agent Logic</li></h3>
+
+<p>Irrespective of the number and type of the applications running on the NED we need a service entity that is responsible for the administration of the different NEDs running. this will be done by the service server and its device agent running on each NED. the responsibilities of these two entities are:
+<div style="float: right; padding: 20px">
+<img src="algo1.png" width="50%" >
+<p style="font-size: 14px"></p>
+<ol>
+<li>	To register each new NED</li>
+<li>	To provide a default list of applications for each registered edge device.</li>
+<li>	To provide a method for installation of the applications in the provided app list on the NED.</li>
+<li>	To check for customizations in the application list at specified intervals of time.</li>
+<li>	To make itself invisible to the end user.</li>
+</ol>
+
+
+
+</p>
+<table border=1>
+<tr>
+<td>
+<img src="handshake1.png" width="33%" height="300">
+<img src="handshake2.png"  width="33%" height="300">
+
+</td>
+</tr>
+</table>
+<hr>
+</br></br></br>
+<h3><li>Intermediate application logic</li></h3>
+<p>We will be considering a use case of the bandwidth sensitive applications for the scope of this paper. In order to extract performance measures, we have designed a content distribution application which serves high bandwidth content to the users. An intermediate logic and memory of the application is held on the Network Edge Device. The cloud server pushes certain contents to the edge, this content is decided on the basis of the location parameter of the edge device. The logic in the NED has two responsibilities.	
+<div style="float: right; padding: 20px">
+<img src="algo2.png" width="50%" >
+<p style="font-size: 14px"></p>
+<ol>
+<li>	To keep the data in its local storage in synchronization with that in the cloud server. This is done by issuing synchronization requests at specified intervals of time.</li>	
+<li>	To serve the user requests for the cached contents locally, and forward requests made otherwise to the respective clouds.</li>	
+</ol>
+</p>
+<table border=1>
+<tr>
+<td>
+<img src="handshake3.png" width="45%" height="300">
+
+
+</td>
+</tr>
+</table>
+<hr>
+</br></br></br>
+
+<h3><li>Results</li></h3>
+<p>Above table show the downloading time taken to download files from NED(our setup) vs that from the cloud server (traditional hierarchical system). 
+Graph clearly demonstrates the time difference in downloading the large files (typically the videos). Local level downloading is much faster than the downloading from cloud. 
+Thus the measurements successfully proves that the NED setup is far more efficient than the traditional cloud setup.
+</p>
+<table border=1>
+<tr>
+<td>
+<img src="graph1.png" width="33%"/>
+<img src="graph2.png"  width="33%"/>
+<img src="graph3.png" width="33%"/>
+
+</td>
+</tr>
+</table>
+<hr>
+</br></br></br>
+
+
+</body>
+</html>

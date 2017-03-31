@@ -1,0 +1,279 @@
+<html>
+<head>
+<title>Recognition with Bag of Words</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Kshitish Deo</h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Project 6 / Deep Learning</h2>
+
+<div style="float: right; padding: 20px">
+<img src="filters.png" />
+<p style="font-size: 14px"></p>
+</div>
+
+<p> Project is about concepts of deep learning. It is divided into two divisions. First is training the network and the second is tuning the existing deep network. In the first part jittering, regularization and depth is added to the network. Second part modifies parameters in the existing network. Following are the total steps taken.
+
+<ol>
+<li>Part 1: Jittering</li>
+<li>Part 1:Mean center of image</li>
+<li>Part 1:Regularization</li>
+<li>Part 1:Performance by adding layers</li>
+<li>Part 2:Fine tune the deep network</li>
+
+</ol>
+
+<ol>
+<h3><li>Part 1: Jittering</li></h3>
+<p>In each batch, some random number of samples are sampled. Then they are given for training. This jittering of samples prevents overfitting of the training data.</p>
+<pre><code>
+im = imdb.images.data(:,:,:,batch) ;
+labels = imdb.images.labels(1,batch) ;
+
+d = randsample(length(batch),length(batch)/2);
+im(:,:,:,d) = fliplr(im(:,:,:,d));
+</code></pre>
+
+
+
+
+<h3><li>Part 1:Mean center of image </li></h3>
+<p>All the images are centered. The mean is substracted.</p>
+<pre><code>
+y_curimage=size(cur_image,1);
+x_curimage=size(cur_image,2);
+avg=mean(mean(cur_image));
+imdb.images.data(:,:,1,image_counter) = cur_image-avg*ones(y_curimage,x_curimage);
+</code></pre>
+
+
+
+
+<h3><li>Part 1:Regularization</li></h3>
+<p>Regularization is done by adding a drop out layer. It is added in between the convolutional and fully connected layer. It takes care of independence of perticular layer from previous layer.</p>
+<pre><code>
+net.layers{end+1} = struct('type', 'dropout', 'rate', 0.5);
+</code></pre>
+
+
+
+
+
+
+
+
+<p>RESULTS WITH JITTERING REGULARIZATION AND MEAN CENTERING- ACCURACY- 0.478667</p>
+<table border=1>
+<tr>
+<td>
+<img src="part1_1.jpg" width="33.33%"/>
+<img src="part1_2.jpg"  width="33.33%"/>
+</td>
+</tr>
+</table>
+
+
+
+
+<h3><li>Part 1:Performance by adding layers</li></h3>
+<p>To make our network more deep, we added a convolutional layer, a max-pool layer, and a relu layer.</p>
+<pre><code>
+net.layers{end+1} = struct('type', 'conv', ...
+                           'weights', {{f*randn(5,5,10,10, 'single'), zeros(1, 10, 'single')}}, ...
+                           'stride', 1, ...
+                           'pad', 0, ...
+                           'name', 'conv1') ;
+                       
+                       
+ net.layers{end+1} = struct('type', 'pool', ...
+                           'method', 'max', ...
+                           'pool', [3 3], ...
+                           'stride', 1, ...
+                           'pad', 0) ;
+
+net.layers{end+1} = struct('type', 'relu') ;
+                     
+net.layers{end+1} = struct('type', 'dropout','rate', 0.5);
+
+</code></pre>
+
+
+<p>RESULTS AFTER ADDING LAYERS- ACCURACY- 0.462667</p>
+<table border=1>
+<tr>
+<td>
+<img src="part1_3.jpg" width="33.33%"/>
+<img src="part1_4.jpg"  width="33.33%"/>
+</td>
+</tr>
+</table>
+
+
+
+
+<h3><li>Part 2 Tuning Deep networks</li></h3>
+<p>Here we tune the Imagenet-VGG-F convolutional network.  We remove the last two layers and replace it with fully connected layerand we add drop out layers between fc7 and fc8 and another dropout layer between fc6 and fc7 to avoid overfitting.We resize each image into a 224*224 image.</p>
+
+
+
+
+
+<p>RESULTS AFTER 5 EPOCH ARE AROUND- 87% AS STATED </p>
+<table border=1>
+<tr>
+<td>
+<img src="part2_1.jpg" width="33.33%"/>
+<img src="part2_2.jpg"  width="33.33%"/>
+</td>
+</tr>
+</table>
+
+
+</ol>
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
