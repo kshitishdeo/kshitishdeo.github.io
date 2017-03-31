@@ -141,154 +141,36 @@ table td img {
 </div>
 <div class="container">
 
-<h2>Project 5 / Scene Recognition with Bag of Words</h2>
+<h2>Other Important Projects</h2>
 
-<div style="float: right; padding: 20px">
-<img src="placeholder.jpg" />
-<p style="font-size: 14px">image</p>
-</div>
 
-<p> Project is about face recognition. It is divided into three devisions. First is the getting the data part and second is the training part and third is the classification part .Here experiment is done with hog feature and without it. Multiple scales are tried. Furthermore, hard negative mining method is tried to check the increase in the accuracy.
-</p>
 
 <ol>
-<li>Get positive image feature</li>
-<li>Get positive image feature</li>
-<li>SVM classifier</li>
-<li>Testing data</li>
-<li>Multiple scales</li>
-<li>Hard negative mining</li>
+<h3><B><li>Head Mounted Displays</li></B></h3>
+<p>
+</p> 
+<ol>
+<li>Eye movement detection for calibration of head mounted device(Google Glass) using Microsoft Kinect.</li>
+<li>Constructed setup using Kinect to get roll, pitch and yaw movement of the head and blinking of eye.</li>
+</ol>
+
+
+<h3><B><li>Graduate Teaching Assistance 	 </li></B></h3>
+<p>
+</p> 
+<ol>
+<li>	Teaching assistant for Artificial Intelligence graduate level course in Georgia Institute of Technology.</li>
+<li>	Designed<a href="https://github.gatech.edu/omscs6601/assignment_1" class="image fit"> Isolation game platform </a>where students can make AI algorithms- minimax and alpha beta pruning with iterative deepening. </li>
+<li>	Developed autograder system to grade the performance of the algorithms made by students. </li>
+<li>	Generated botfight environment where student's AI can play against other students.</li>
+<li> 	Hangout live help for students over <a href="https://www.youtube.com/watch?v=CikyUYcEBrg" class="image fit">here</a></li> 
+</ol>
+
+<h3><B><li>IIT Powai smart city challenge</li></B></h3>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/jzS4viZBwVg" frameborder="0" allowfullscreen></iframe>
+
+
+</br></br></br>
 
 </ol>
-<ol>
-<h3><li>Get positive image feature</li></h3>
-<p> Here in get positive images, we have taken images from the file and extracted hog features from them. There is no need to reduce the size as we have taken  because the original image size is give as 36*36. Here we use vl_hog to extract hog features. The they are flattened and saved in fatures_pos.</p>
-<pre><code>
-for i= 1: num_images
-    img=imread(strcat(train_path_pos,'/',image_files(i).name)); 
-    hog = vl_hog(im2single(img), CELLSIZE); 
-    hog_new=reshape(hog,[1,(feature_params.template_size / feature_params.hog_cell_size)^2 * 31]);
-    features_pos=[features_pos;hog_new];   
-end
 
-</code></pre>
-
-
-
-<h3><li>Get negative image feature</li></h3>
-<p> Here in get negative images i.e the images which doesnt contain faces in it. Thus we extract hog features from them. Here the size of the images is not even thus we take random images and crop to the size of the template.  Here aswell we use vl_hog to extract hog features. Then they are flattened and saved in negative_pos.</p>
-<pre><code>
-num_crops=floor(num_samples / num_images);
-random_number = randi(274,1,num_samples);
-for i= 1: num_samples
-    img=imread(strcat(non_face_scn_path,'/',image_files(random_number(1,i)).name));  
-    img=rgb2gray(single(img));    
-    [n m]= size(img);
-    L = feature_params.template_size;
-    img_crop = img(randi(n-L+1)+(0:L-1),randi(m-L+1)+(0:L-1));  
-    hog = vl_hog((img_crop), CELLSIZE);
-    hog_new=reshape(hog,[1,(feature_params.template_size / feature_params.hog_cell_size)^2 * 31]);
-    features_neg=[features_neg;hog_new];
-end
-</code></pre>
-
-
-<h3><li>SVM classifier</li></h3>
-<p>Here we use SVM classifier to classify the data. The positive and negative training data is then used as parameter in vl_svmtrain. LAMDA is tuned to 0.0001 for best performance. We get 'w' and 'b'.</p>
-<pre><code>
-X=[features_pos;features_neg];
-Y=[ones(6713,1);-1*ones(10000,1)];
-lambda=0.0001;
-[w b] = vl_svmtrain(X', Y, lambda);  
-</code></pre>
-
-
-
-<h3><li>Testing data</li></h3>
-<p>Here we take test image and extract hog features on it. Then we iterative sliding window of length cell size on the test image hog fetures. On each of window we classify with svm and check the confidence. If it is above a perticular limit the we pass it furhter in the pipeline. After sliding window ends we do maximum supression and get confidences and boxes.</p>
-
-<pre><code>
-for z = 1:length(test_scenes)    
-    for scale = 1: length(scales)   
-        img=imresize(img, scales(scale));
-        hog = vl_hog(im2single(img), CELLSIZE);
-        for i=1: size(hog,1)-CELLSIZE
-            for j=1:size(hog,2)-CELLSIZE
-                hog_patch=hog(i:i+CELLSIZE-1,j:j+CELLSIZE-1,:);     
-                hog_new=reshape(hog_patch,[1,(feature_params.template_size /
-		 feature_params.hog_cell_size)^2 * 31]);
-                threshold=hog_new*w + b;
-                if threshold > 0.25
-                    cur_bboxes = [cur_bboxes;cur_x_min*CELLSIZE*scales(scale), 
-			cur_y_min*CELLSIZE*scales(scale), (cur_x_min + CELLSIZE)*CELLSIZE*scales(scale),
-			 (cur_y_min + CELLSIZE)*CELLSIZE*scales(scale)];                   
-                    cur_confidences=[cur_confidences;threshold];
-                    cur_image_ids = [cur_image_ids;{test_scenes(z).name}];
-		    flag ==1	  
-    
-    if flag==1
-        [is_maximum] = non_max_supr_bbox(cur_bboxes, cur_confidences, size(img1));
-        if size(is_maximum,1) ~=0 
-            cur_confidences = cur_confidences(is_maximum,:);
-            cur_bboxes      = cur_bboxes(     is_maximum,:);
-            cur_image_ids   = cur_image_ids(  is_maximum,:);
-
-            bboxes      = [bboxes;      cur_bboxes];
-            confidences = [confidences; cur_confidences];
-            image_ids   = [image_ids;   cur_image_ids];
-        end
-    end    
-end
-</code></pre>
-<h3><li>Multiple scales</li></h3>
-<p>We have considered three scale of 0.9 and its powers. Thus after all the scales are done we do maximum supression. Futhermore, we need to multiply by scale while drawing boxes.</p>
-
-<h3><li>Hard negative mining</li></h3>
-<p>
-In hard negative mining, we have to extract positive and negative training features. Clasify them and get w and b values from svm train. We then pass negative images in the detector program to get some false positives. We take that feature points of these false positives and add them as negative in our training data features. And we train the classifier again and give it to detector to find actual test images. 
-</p>
-<pre><code>
-for z = 1:length(test_scenes)
-        hog = vl_hog(im2single(img), CELLSIZE);
-        for i=1: size(hog,1)-CELLSIZE
-            for j=1:size(hog,2)-CELLSIZE
-                hog_patch=hog(i:i+CELLSIZE-1,j:j+CELLSIZE-1,:);     
-                hog_new=reshape(hog_patch,[1,(feature_params.template_size 
-					/ feature_params.hog_cell_size)^2 * 31]);
-                threshold=hog_new*w + b;
-                if threshold > 0.5
-                    cur_bbox = [cur_x_min*CELLSIZE*scales(scale), cur_y_min*CELLSIZE*scales(scale), 
-		(cur_x_min + CELLSIZE)*CELLSIZE*scales(scale), (cur_y_min + CELLSIZE)
-		*CELLSIZE*scales(scale)];
-                    hog_for_further_use=[hog_for_further_use;hog_new];
-
-</code></pre>
-
-
-
-
-<center>
-<p>
-Face template HoG visualization.
-<p>
-<img src="hog_image.jpg">
-
-<p>
-Example of detection on the test set from the starter code.
-<p>
-<img src="brazil.jpg">
-
-</center>
-
-</div>
-</body>
-</html>
-
-
-
-
-<div style="clear:both" >
-<p> 	</p>
-</div>
-</body>
-</html>

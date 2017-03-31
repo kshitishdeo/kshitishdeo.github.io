@@ -131,128 +131,64 @@ td img {
 <body>
 <div id="header" >
 <div id="headersub">
-<h1><span style="color: #DE3737"> Kshitish Deo</span></h1>
+<!--<h1><span style="color: #DE3737"> Kshitish Deo</span></h1>-->
 </div>
 </div>
 <div class="container">
 
-<h2>Project 2: Local Feature Matching</h2>
+<h2>Dynamic Hand Gesture Recognition using Hidden Markov Model by Microsoft Kinect Sensor</h2>
 
 <div style="float: right; padding: 10px">
-<img src="mini2.jpg" "/>
+<img src="results.png" "/>
 
-<p style="font-size: 20px">Epipolar lines.</p>
 </div>
 
 
 <p> 	
-This project covers camera caliberation, creating robust fundamental matrix and implementing RANSAC. We calculate the projection matrix with which we get the camera center in the fisrt part. Second part focuses on finding fundamental matrix. In this part normalization is covered to get robust fundamental matrix. Inliers are seperated from the outliers by using RANSAC algorithm.  
-<p>
+Hand gesture recognition is one of the leading applications of human computer interaction. 
+Here, dynamic hand gesture recognition for few subset of Indian sign language recognition was considered. 
+The use of depth camera such as <B>Kinect sensor gave skeleton information of signer body</B>.
+After detailed study of dynamic ISL vocabulary with reference to skeleton joint information, 
+we have identified <B>angle as a feature with reference to two moving hand. </B>
+Here, real time video has been captured and gesture was recognized using <B>Hidden Markov Model (HMM)</B>. 
+Ten state HMM model was designed and normalized angle feature of dynamic sign was being observed. 
+Maximum likelihood probability symbol was considered as a recognized gesture. 
+Algorithm has been tested on ISL <B>20 dynamic signs of total 800 training set of four persons and achieved 89.25% average accuracy.</B><p>
 There are following parts in the project.
 </p>
 
 <ol>
-<li>Camera Caliberation</li>
-<li>Fundamental Matrix and epipolar lines</li>
-<li>Ransac method</li>
-<li>Improved fundamental matrix by normalized coordinates</li>
-<li>Analysis before and after normalization </li>
-<li>Results with different images</li>
+<li>Introduction</li>
+<li>Methodology</li>
+<li>Dataset</li>
+<li>Recognition Using Hidden Markov Model</li>
+<li>Algorithms </li>
+<li>Results and analysis</li>
 </ol>
 
 <ol>
-
-
-
-
-<h3><li>Camera Caliberation</li></h3>
-
+<h3><li>Introduction</li></h3>
 <p> 	
-The basic task here is to find 2D coordinates from 3D coordinates given. 
-We get linear regression equation from 2D and 3D points. It is of form 2D_points= M*3D_points. Here M is the projection matrix.But there is a problem in this. The matrix M is for a perticular scale. To overcome this part, we fix the last element M(3,4) to 1. Thus following projection matrix is obtained which is exactly similar to the estimated projection matrix in the project description.The residual distance obtained is :0.0445 
+In India, the main mode of communication between the deaf and the outside world is Indian Sign Language.
+Vision based approach is found more suitable and practical as compared to hardware based approach. 
+Vision based processing can be divided into broadly two types:2D web camera and 3D stereo camera. 
+Problems faced by the 2D cameras are: complex algorithms to handle segmentation of colour, lack of depth information and brightness factor.
+With the advancement of sensor technology in computer vision, Microsoft Kinect sensor is widely used to deal with dynamic hand gesture recognition problem. 
+This project presents a system to recognize hand gestures with Kinect camera. Pattern of hand movement is analyzed using Hidden Markov Model.
+This gesture is divided into states. Output symbols are extracted from the gestures. These symbols become parameters for the Hidden Markov Model(HMM). 
+Here, dynamic hand gesture recognition for ISL word using Kinect camera and HMM is presented
 </p>
+<h3><li>Methodology</li></h3>
 <p>
-Following is the projection matrix:
-</p>
-<p>
-<table style="width:40%">
-  <tr>
-    <th>-0.4583</th>
-    <th>0.2947</th>
-    <th>0.0140</th>
-    <th>-0.0040</th>
-  </tr>
-  <tr>
-    <th>0.0509</th>
-    <th>0.0546</th>
-    <th>0.5411</th>
-    <th>0.0524</th>
-  </tr>
-  <tr>
-    <th>-0.1090</th>
-    <th>-0.1783</th>
-    <th>0.0443</th>
-    <th>-0.5968</th>
-  </tr>
-
-</table>
+The system consists of modules such as data acquisition, feature extraction and hand gesture recognition using HMM. In data acquisition module color, depth and skeleton information was captured.  In feature extraction with the skeleton joint information, angle was formed and used as a feature  and data normalization was done on it. In hand gesture recognition module, maximum likelihood of HMM parameters was derived using the Baum-Welch algorithm for given set of sequences.
 </p>
 
-<p>
-After getting the projection matrix we can get the camera center. The equation:
-C = -(Q^-1) x (m_4)
-</p>
-<p>
-We get the above equation from M = (Q | m_4 ). 
-Here C is the camera center. We have taken Q as 3x3  matrix and m_4 is the forth column.
-</p>
-<p>
-The camera center obtained is = <-1.5127, -2.3517, 0.2826>.
-</p>
-<h3>Code for projection matrix</h3>
-<pre><code>
-%Getting projection matrix:
-
-%Writing equation in linear form
-A(:,1)=Points_3D(:,1);
-A(:,2)=Points_3D(:,2);
-A(:,3)=Points_3D(:,3);
-A(:,4)=1;
-A(:,11)= -(Points_2D(:,1).*Points_3D(:,3));
-A(:,10)= -(Points_2D(:,1).*Points_3D(:,2));
-A(:,9)= -(Points_2D(:,1).*Points_3D(:,1));
-A(:,12)=- Points_2D(:,1);
-B(:,5)=Points_3D(:,1);
-B(:,6)=Points_3D(:,2);
-B(:,7)=Points_3D(:,3);
-B(:,8)=1;
-B(:,11)= -(Points_2D(:,2).*Points_3D(:,3));
-B(:,10)= -(Points_2D(:,2).*Points_3D(:,2));
-B(:,9)= -(Points_2D(:,2).*Points_3D(:,1));
-B(:,12)=- Points_2D(:,2);
-X(1:2:end,:) = A;
-X(2:2:end,:) = B;
-%The above is homogenous equation
-[U, S , V]= svd(X);
-M= V(:, end);
-M
-M = reshape(M,[],3)';
-M=-M;
-M
-</code></pre>
-<h3>Code for camera center</h3>
-<pre><code>
-M1= M(:,1:3)
-M2=M(:, 4)
-%writing in form C = -(Q^-1) x (m_4)
-Center=-inv(M1)*M2;
-</code></pre>
-<h3>RESULTS 1</h3>
+<h3>Methodology diagram</h3>
 <table border=1>
 <tr>
 <td>
-<img src="camera.jpg" width="49%"/>
-<img src="coordinates.jpg"  width="49%"/>
+<img src="methodology.png" width="90%"/>
+
 
 </td>
 </tr>
@@ -262,340 +198,125 @@ Center=-inv(M1)*M2;
 
 
 
+<h3><li>Dataset</li></h3>
+<p>
+In this paper, total 20 dynamic signs from ISL vocabulary has been considered
+</p>
 
-<h3><li>Fundamental Matrix and epipolar lines</li></h3>
-<p>
-The second part involves finding fundamental matrix and drawing epipolar lines. Fundamental matrix is used for estimating the points for mapping in one image to lines in another.There are one equation per point. 
-We start getting regression lines like above with 9 unknown points. Similarly, we can solve by 8 point algorithm. The last one is fixed to scale the matrix.
-</p>
-<p>
-The fundamental matrix should be of rank 2. So we decompose F using singular value decomposition into the matrices U ΣV' = F. Then we get  2 matrix by setting the smallest singular value in Σ to zero.
-</p>
-<p>
-The fundamental matrix is =
-</p>
-<table style="width:40%">
+<table>
   <tr>
-    <th>-0.0000</th>
-    <th>0.0000</th>
-    <th>-0.0019</th>
+    <th>Shirt</th>
+    <th>Pant</th>
+    <th>Tie</th>
+	<th>Coat</th>
   </tr>
-  <tr>
-    <th>0.0000</th>
-    <th>0.0000</th>
-    <th>0.0172</th>
+  <tr>
+    <th>Kurta</th>
+    <th>Banyan</th>
+    <th>Cap</th>
+	<th>Saree</th>
   </tr>
-  <tr>
-    <th>-0.0009</th>
-    <th>-0.0264</th>
-    <th>0.9995</th>
+<tr>
+    <th>Sky</th>
+    <th>Star</th>
+    <th>Cloud</th>
+	<th>Wind</th>
   </tr>
+<tr>
+    <th>Lightening</th>
+    <th>Sun</th>
+    <th>Thunder</th>
+	<th>Sunrise</th>
+  </tr>
+<tr>
+    <th>Sunset</th>
+    <th>Room</th>
+    <th>House</th>
+	<th>Roof</th>
+  </tr>
+  
 
 </table>
 </p>
 
 
-<h3>Code for fundamental matrix</h3>
+<h3>Algorithm: Feature extraction and processing from tracked skeleton </h3>
 <pre><code>
-[x_a,y_a]=size(Points_a);
-[x_b,y_b]=size(Points_b);
+%Initial:  Each gesture is tracking156 frames.First 13 and last 2 frames are skipped.
+%Frames between 14 to 154 frames are tracked (140 frames). 
+%Each gesture is consists of 10 states so in every 14 frames one symbol (state) is derived.
 
-u= Points_a(:,1);
-v= Points_a(:,2);
-u1= Points_b(:,1);
-v1= Points_b(:,2);
+1:	frameNo=0; angleSpinSum=0;
+2:	SymbolArray A[10]=0; 	  	  //Ten state gesture is initialized to zero initially
+3:	if (frameNo==14 )
+4:	ALARM; 			 			  //New Gesture processing will start
+5:	If(frameNo==154)
+6:	ALARM; 						  // Ready for next gesture
+7:	 if(frame==155)   //154th frame is the last frame
+8:	    Call Procedure HMMRecognition (SymbolArray A) // HMM classification procedure for Skeleton
+9:	Else //extract the angle feature
+10:	RightWrist = skel. WristRight  // Co-ordinators of right wrist joint
+11:	LeftWrist = skel.WristLeft     // Co-ordinators of left wrist joint
+12:	SpineJoint = skel. Spine       // Co-ordinators of spine joint
+13:	AngleSpine=AngleBetweenTwoVectors( RightWrist - SpineJoint, LeftWrist-SpineJoint)
+14:	If (frameNo%14 == 0)           // Check number of frame is in multiple of 14
+15:	Avg_angle = average(AngleSpineSum)
+16:	Observation_symbol = normalize(Avg_angle) //Normalize the angle into symbols 1 to 18          
+17:	A = store the Observation_symbol in array A
+18:	  else
+19:	AngleSpineSum=AngleSpineSum+AngleSpine
 
-%creating linear equation
-M=zeros(x_a,9 );
-M(:,1)=u.*u1;
-M(:,2)=u.*v1;
-M(:,3)=u;
-M(:,4)=v.*u1;
-M(:,5)=v.*v1;
-M(:,6)=v;
-M(:,7)=u1;
-M(:,8)=v1;
-M(:,9)=ones(x_a,1);
+EndProcedure
 
-[U, S, V] = svd(M);
-f = V(:, end);
-f=f';
-F = reshape(f, [3 3]);
-%k = rank(F_matrix)
-% output of k is 2
-[U, S, V] = svd(F);
-S(3,3) = 0;
-F_matrix = U*S*V';
-F_matrix(isnan(F_matrix))=0;
+</code></pre>
+
+<h3>Algorithm: Hand gesture recognition using HMM</h3>
+<pre><code>
+%Procedure HMMRecognition (SymbolArrayA[])
+%Initial:  Array of symbols are transferred into HMM models.
+%Each HMM model represents one gesture. 
+%All HMM models of related to one gesture are stored in single file F. 
+%So for unknown gesture, we searched HMM likelihood gesture in parallel.
+
+1:	gestureNumber =n; //n is number of gestures stored in file F
+2:	noOfSymbols=10; //10 state gesture
+3:	noOfFiles=20 //20 gesture types
+4:	for i=1 to noOfFiles
+5:	SymbolArraysequence[][]=SymbolArray[gestureNumber][noOfSymbols];
+// Stored symbols from file Fi
+//sequence[1][1'10]tosequence [last gesturenumber]
+[1'10]
+
+6:	HiddenMarkovModel hmm (10, 18); // Create instance ofHMMhaving10states and each have 18 possible values.
+7:	learn = BaumWelchLearning(hmm); //Set Tolerance = 0.0001,Iterations = 10
+8:	learn.Run(sequences) ;  		// Train the symbols from the file
+9:	likelihoodi = hmm.Evaluate(A); 
+    // Evaluate likelihood of the array A with respect to the  sequences from file                                                                
+    // Check the probability of sequence A with each HMM models 
+
+10:	end for
+
+11:	Gesture= Max( likelihoodi) // Sequences which contains few errors have higher probability
+12:	Print Gesture
+13:	StoreSequence( Fi , A); // Store the sequence into Filei.
+
+EndProcedure
 
 </code></pre>
 
 <h3>RESULTS 2</h3>
+<p>
+Total 20 ISL signs on four different persons considering scaling variation were considered. Each sign tested on four different persons 10 times and average sign accuracy was calculated. Total average accuracy is calculated by equation (3). Result shows that, on expert signer we have achieved good accuracy and for non-expert signer accuracy decreases. But still, system is designed in such a way that at testing time training set gets updated and helped to increase recognition rate for Non-expert signer.
+Sign language recognition is a very challenging problem with limitation and constraints of computer vision and cannot be directly compared with other sign language work due to dependency of various signs, camera and dataset 
+
+</p>
 <table border=1>
 <tr>
 <td>
-<img src="epipolar1.jpg" width="49%"/>
-<img src="epipolar2.jpg"  width="49%"/>
-
+<img src="resultsFinal.png" width="90%" height="200"/>
 </td>
 </tr>
 </table>
 
-
-
-
-
-<h3><li>RANSAC</li></h3>
-<p>
-RANSAC is used for best fundamental matrix by removing the outliers. We need to iteratively choose some points (10 in the code), and call estimate_fundamental matrix code to get the fundamental matrix for that point. Here we count the number of inliers. 
-The linear eqaution from the estimated inliers should result in value close to one. In the code the value is fixed to 0.005 which acts as threshold between the inliers and the outliers. 
-</p>
-<p>
-The best fundamental matrix is for one of the trial run was=
-</p>
-<table style="width:40%">
-  <tr>
-    <th>-0.0000</th>
-    <th>0.0000</th>
-    <th>0.0081</th>
-  </tr>
-  <tr>
-    <th>0.0000</th>
-    <th>0.0000</th>
-    <th>-0.0152</th>
-  </tr>
-  <tr>
-    <th>-0.0065</th>
-    <th>0.0122</th>
-    <th>-0.9998</th>
-  </tr>
-
-</table>
-</p>
-
-
-<h3>Code for ransac function</h3>
-<pre><code>
-%ransac function
-iterations=1000;    % iterations
-[x_match,y_match]=size(matches_a);
-best=0;
-iteration_number=0;
-for i=1: iterations
-    rand_num=randsample(x_match,10)
-    m_a =matches_a(rand_num,:);
-    m_b =matches_b(rand_num,:);
-    f_matrix= estimate_fundamental_matrix(m_a,m_b);
-    [flag, inliers_a1 , inliers_b1]=test_inliers1(f_matrix,matches_a,matches_b); % seperate funtion!
-    if (flag==0)
-        continue;
-    end    
-    if best< size(inliers_a1,1)
-        Best_Fmatrix=f_matrix;     
-        inliers_a=inliers_a1;
-        inliers_b=inliers_b1;    
-        best=size(inliers_a,1);
-        iteration_number=i;
-    end
-
-end
-</code></pre>
-
-<h3>Code for test_inlier function</h3>
-<pre><code>
-    flag=0;
-    M=M';
-    M=reshape(M,9,1);
-    [x_a,y_a]=size(matches_a);
-    [x_b,y_b]=size(matches_b);
-
-    u= matches_a(:,1);
-    v= matches_a(:,2);
-    u1= matches_b(:,1);
-    v1= matches_b(:,2);
-
-    M1=zeros(x_a,9 );
-    
-    M1(:,1)=u.*u1*M(1,1);
-    M1(:,2)=u1.*v*M(2,1);
-    M1(:,3)=u1*M(3,1);
-    M1(:,4)=v1.*u*M(4,1);
-    M1(:,5)=v.*v1*M(5,1);
-    M1(:,6)=v1*M(6,1);
-    M1(:,7)=u*M(7,1);
-    M1(:,8)=v*M(8,1);
-    M1(:,9)=ones(x_a,1)*M(9,1);
-    
-    sum_matrix=sum(M1,2);
-    [sum_x,sum_y]=size(sum_matrix);
-    b=find(sum_matrix<0.005 &  sum_matrix> -0.005);    %threshold
-    disp('size of b')
-    [b_x,b_y]=size(b)
-    if b_x  == 0
-        flag=0;
-        inliers_a=[];
-        inliers_b=[];
-    else        
-        flag=1;
-        inliers_a=matches_a(b,:);
-        inliers_b=matches_b(b,:);
-    end
-end
-</code></pre>
-
-<h3>RESULTS 2</h3>
-<table border=1>
-<tr>
-<td>
-<img src="ransac1.jpg" width="33%" height="200"/>
-<img src="epipolar3.jpg"  width="33%" height="200"/>
-<img src="epipolar4.jpg"  width="33%" height="200"/>
-</td>
-</tr>
-</table>
-
-
-<h3><li>Normalized coordinates for fundamental matrix</li></h3>
-<p>
-In the third part, normalization of coordinates is done. Translation is done to get the mean at the center. And scaling is done by reducing the image to standard deviation. 
-</p>
-<p>
-A=SxTxA_original
-</p>
-<p>
-And we get back the original fundamental matrix by F_o=Tb' x F x Ta
-</p>
-<h3>Code for test_inlier function</h3>
-<pre><code>
-mu=mean(u);
-u_1=u-(mu*ones(size(u)));
-su=std(u_1);
-isu=1./su;
-mv=mean(v);
-v_1=v-(mv*ones(size(v)));
-sv=std(v_1);
-isv=1./sv;
-
-
-mu1=mean(u1);
-u_2=u1-mu1*(ones(size(u1)));
-su1=std(u_2);
-isu1=1./su1;
-
-mv1=mean(v1);
-v_2=v1-mv1*(ones(size(v1)));
-sv1=std(v_2);
-isv1=1./sv1;
-
-
-% for u,v
-scalingM=[isu,0,0;0,isv,0;0,0,1];
-transM=[1,0,-mu; 0,1, -mv; 0,0,1];
-mod_u=zeros(size(u));
-mod_v=zeros(size(v));
-one=ones(size(u));
-T=scalingM*transM;   %for first T
-
-mod_u=T(1,1)*u+T(1,2)*v+T(1,3)*one;
-mod_v=T(2,1)*u+T(2,2)*v+T(2,3)*one;
-
-
-
-% for u1,v1
-scalingM1=[isu1,0,0;0,isv1,0;0,0,1];
-transM1=[1,0,-mu1; 0,1, -mv1; 0,0,1];
-T11=scalingM1*transM1;  %for second T
-mod_u1=T11(1,1)*u1+T11(1,2)*v1+T11(1,3)*one;
-mod_v1=T11(2,1)*u1+T11(2,2)*v1+T11(2,3)*one;
-
-
-
-M(:,1)=mod_u.*mod_u1;
-M(:,2)=mod_u.*mod_v1;
-M(:,3)=mod_u;
-M(:,4)=mod_v.*mod_u1;
-M(:,5)=mod_v.*mod_v1;
-M(:,6)=mod_v;
-M(:,7)=mod_u1;
-M(:,8)=mod_v1;
-M(:,9)=ones(x_a,1);
-[U, S, V] = svd(M);
-f = V(:, end);
-f=f';
-F = reshape(f, [3 3]);
-
-
-[U, S, V] = svd(F);
-S(3,3) = 0;
-%V = V(:, end);
-V=V';
-F_matrix1 = U*S*V;
-
-
-T11=T11';
-F_matrix=T11*F_matrix1*T
-k = rank(F_matrix);
-F_matrix(isnan(F_matrix))=0;
-</code></pre>
-
-<h3>RESULTS 4</h3>
-<table border=1>
-<tr>
-<td>
-<img src="normal.jpg" width="33%" height="250"/>
-<img src="epipolar5.jpg"  width="33%" height="250"/>
-<img src="epipolar6.jpg"  width="33%" height="250"/>
-</td>
-</tr>
-</table>
-<h3><li>ANALYSIS</li></h3>
-<p>
-Before normalization the number of inliers detected were around 140 to 160 with threshold = 0.005. But by normalizing the data, the inliers increase more than triple. It lies in 600 to 700 with same threshold. We can even see the difference in the diagram. The faulty points also consideralbly reduce after normalizing the data. 
-</p>
-
-
-<h3><li>Results in a table</li></h3>
-<h3>Nortre Dam</h3>
-<table border=1>
-<tr>
-<td>
-<img src="epi1.jpg" width="33%" height="250"/>
-<img src="epipolarepi1.jpg"  width="33%" height="250"/>
-<img src="epipolarepi2.jpg"  width="33%" height="250"/>
-</td>
-</tr>
-
-<tr>
-<td>
-<img src="epi2.jpg" width="33%" height="250"/>
-<img src="epipolarepi3.jpg"  width="33%" height="250"/>
-<img src="epipolarepi4.jpg"  width="33%" height="250"/>
-
-</td>
-</tr>
-
-</table>
-<h3>Episcopal Gaudi</h3>
-<table border=1>
-<tr>
-<td>
-<img src="gau1.jpg" width="33%" height="250"/>
-<img src="epigau1.jpg"  width="33%" height="250"/>
-<img src="epigau2.jpg"  width="33%" height="250"/>
-</td>
-</tr>
-
-<tr>
-<td>
-<img src="gau2.jpg" width="33%" height="250"/>
-<img src="epigau3.jpg"  width="33%" height="250"/>
-<img src="epigau4.jpg"  width="33%" height="250"/>
-
-</td>
-</tr>
-
-</table>
-</ol>
-
-</body>
-</html>
+<h3>Published paper:</h3>
+<p><B>Archana Ghotkar, Pujashree Vidap, Kshitish Deo.Dynamic Hand Gesture Recognition using Hidden Markov Model by Microsoft Kinect Sensor."  International Journal of Computer Applications 150(5):5-9, September 2016.</B></p>
