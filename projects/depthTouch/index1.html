@@ -232,10 +232,9 @@ The green ones are the ones we managed to achieve, while the light yellow ones a
 
 <img src="illuminationPipe.png" width="90%" height="300">
 
-<p>We saw that the depth data for the fingers was noisy. However, the illumination data was much more stable. Following are the steps to clean the illumination data. </p>
-<hr>
-
-Filtering -> Rotation and Reflection ->
+<p>We saw that the Depth was noisy. However, the illumination data was much more stable
+</br></br>
+Filtering -> Rotation & Reflection ->
 Setting Interest Region->Getting X Maximal graph -> Finding 80th Percentile of value->Getting Y Maximal Graph->
 Getting Depth of Interest Region->
 
@@ -243,21 +242,15 @@ Detecting Finger->Sobel Filtering with Threshold based on Depth-> Getting Direct
 Distinguishing Fingers -> Local Comparison ->
 Monitoring States -> Getting local State and duration ->
 Getting Gestures from State -> Using State Diagram
-
+</p>
 
 <hr>
 </br></br></br>
 <h3><li>Depth pipeline</li></h3>
 <img src="depthPipe.png" width="90%" height="300">
-    
-    <p>Back of the hand is not clear in illumination pipeline. However, it can be seen in depth frame even though it is noisy. Following are the steps to clear the depth frame to get the back of the hand.</p>
-    <hr>
-    Filtering -> Rotation and Reflection ->
-    Setting Interest Region when the finger is above the hand -> Getting the finger location from the illumination pipeline -> Recording and storing the countour of the hand -> Recoding and storing the tip of the fingers above the hand ->Using the set countours from previous frames to decide the point of touching if any -> Freezing the hand when the finger of other hand is close to the hand ->
-    
-    
-    <hr>
-    </br></br></br>
+
+<hr>
+</br></br></br>
 <h3><li>Application: Paint!!!</li><h3>
 <iframe width="640" height="360" src="https://www.youtube.com/embed/6JceZvvkFiA" frameborder="0" allowfullscreen></iframe>
 <hr>
